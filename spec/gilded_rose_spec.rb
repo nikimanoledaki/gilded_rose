@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'simplecov'
+SimpleCov.start
 require 'gilded_rose'
 require 'item'
 
@@ -10,15 +12,37 @@ describe GildedRose do
       GildedRose.new(items).update_quality
       expect(items[0].name).to eq 'foo'
     end
+
+    it 'cannot be negative' do
+      books = [Item.new('Book', 1, 4)]
+      gr = GildedRose.new(books)
+      gr.update_quality
+      expect(gr.items[0].quality).not_to eq -1
+    end
+
+    it 'degrades twice as fast after the sell by date' do
+      books = [Item.new('Book', 0, 4)]
+      gr = GildedRose.new(books)
+      gr.update_quality
+      expect(gr.items[0].quality).to eq 2
+    end
   end
 
-  describe '#sulfuras' do
+  context '#sulfuras' do
     it 'sell_in does not change' do
       sulfuras = [Item.new('Sulfuras, Hand of Ragnaros', 0, 0)]
       gr = GildedRose.new(sulfuras)
       before = gr.items[0].sell_in
       gr.update_quality
       expect(gr.items[0].sell_in).to eq before
+    end
+
+    it 'quality does not decrease' do
+      sulfuras = [Item.new('Sulfuras, Hand of Ragnaros', 0, 0)]
+      gr = GildedRose.new(sulfuras)
+      before = gr.items[0].quality
+      gr.update_quality
+      expect(gr.items[0].quality).to eq before
     end
   end
 
@@ -28,6 +52,13 @@ describe GildedRose do
       gr = GildedRose.new(brie)
       gr.update_quality
       expect(gr.items[0].quality).to eq 1
+    end
+
+    it 'cannot be more than 50' do
+      brie = [Item.new('Aged Brie', -25, 50)]
+      gr = GildedRose.new(brie)
+      gr.update_quality
+      expect(gr.items[0].quality).to eq 50
     end
   end
 
@@ -59,6 +90,13 @@ describe GildedRose do
       gr = GildedRose.new(passes)
       gr.update_quality
       expect(gr.items[0].quality).to eq 0
+    end
+
+    it 'Quality cannot be more than 50' do
+      item = [Item.new('Backstage passes to a TAFKAL80ETC concert', 2, 50)]
+      gr = GildedRose.new(item)
+      gr.update_quality
+      expect(gr.items[0].quality).to eq 50
     end
   end
 end

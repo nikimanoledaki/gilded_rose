@@ -16,27 +16,29 @@ class GildedRose
         brie(item)
       else
         if item.quality > 0
-          if item.name != 'Sulfuras, Hand of Ragnaros'
-            item.quality = item.quality - 1
+          unless sulfuras?(item)
+            if item.sell_in > 0
+              item.quality = item.quality - 1
+            else
+              item.quality = item.quality - 2
+            end
           end
         end
       end
 
       reduce_sell_in(item)
 
-      if item.sell_in < 0
-        if item.name != 'Aged Brie'
-          if item.name != 'Backstage passes to a TAFKAL80ETC concert'
-            if item.quality > 0
-              if item.name != 'Sulfuras, Hand of Ragnaros'
-                item.quality = item.quality - 1
-              end
-            end
-          else
-            item.quality = item.quality - item.quality
-          end
-        end
-      end
+      # if item.sell_in < 0
+      #   if item.name != 'Aged Brie'
+      #     if item.name != 'Backstage passes to a TAFKAL80ETC concert'
+      #       if item.quality > 0
+      #         unless sulfuras?(item)
+      #           item.quality = item.quality - 1
+      #         end
+      #       end
+      #     end
+      #   end
+      # end
 
     end
   end
@@ -48,25 +50,31 @@ def reduce_sell_in(item)
   end
 end
 
+# def decrease_quality(item)
+#   unless sulfuras?(item)
+#     item.quality = item.quality + 1
+#   end
+# end
+
 # Items that age well
 
-def increase_quality(item)
-  if item.quality < 50
-    item.quality = item.quality + 1
-  end
+def limit(item)
+  item.quality >= 50
 end
 
 def brie(item)
-  increase_quality(item)
+  item.quality = item.quality + 1 unless limit(item)
 end
 
 def backstage_pass(item)
-  if item.sell_in <= 10
+  if item.sell_in == 0
+    item.quality = 0
+  elsif limit(item)
+    item
+  elsif item.sell_in <= 10
     item.quality = item.quality + 2
   elsif item.sell_in <= 5
     item.quality = item.quality + 3
-  elsif item.sell_in == 0
-    item.quality = 0
   else
     increase_quality(item)
   end
