@@ -12,6 +12,16 @@ describe GildedRose do
     end
   end
 
+  describe '#sulfuras' do
+    it 'sell_in does not change' do
+      sulfuras = [Item.new('Sulfuras, Hand of Ragnaros', 0, 0)]
+      gr = GildedRose.new(sulfuras)
+      before = gr.items[0].sell_in
+      gr.update_quality
+      expect(gr.items[0].sell_in).to eq before
+    end
+  end
+
   describe '#brie' do
     it 'quality increases the older it gets' do
       brie = [Item.new('Aged Brie', 0, 0)]

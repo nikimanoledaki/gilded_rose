@@ -22,9 +22,7 @@ class GildedRose
         end
       end
 
-      if item.name != 'Sulfuras, Hand of Ragnaros'
-        item.sell_in = item.sell_in - 1
-      end
+      reduce_sell_in(item)
 
       if item.sell_in < 0
         if item.name != 'Aged Brie'
@@ -45,9 +43,10 @@ class GildedRose
 end
 
 def reduce_sell_in(item)
-  item.sell_in = item.sell_in - 1
+  unless sulfuras?(item)
+    item.sell_in = item.sell_in - 1
+  end
 end
-
 
 # Items that age well
 
@@ -59,7 +58,6 @@ end
 
 def brie(item)
   increase_quality(item)
-  reduce_sell_in(item)
 end
 
 def backstage_pass(item)
@@ -72,5 +70,10 @@ def backstage_pass(item)
   else
     increase_quality(item)
   end
-  reduce_sell_in(item)
+end
+
+private
+
+def sulfuras?(item)
+  item.name == "Sulfuras, Hand of Ragnaros"
 end

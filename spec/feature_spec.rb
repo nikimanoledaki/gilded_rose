@@ -31,13 +31,13 @@ describe 'Feature tests' do
   end
 
   context 'Sulfuras' do
-    it 'quality does not decrease' do
-      sulfuras = [Item.new('Sulfuras', 0, 0)]
-      gr = GildedRose.new(sulfuras)
-      before = gr.items[0].quality
-      gr.update_quality
-      expect(gr.items[0].quality).to eq before
-    end
+    # it 'sell_in does not decrease' do
+    #   sulfuras = [Item.new('Sulfuras, Hand of Ragnaros', 0, 0)]
+    #   gr = GildedRose.new(sulfuras)
+    #   before = gr.items[0].sell_in
+    #   gr.update_quality
+    #   expect(gr.items[0].sell_in).to eq before
+    # end
 
     it 'quality does not decrease' do
       sulfuras = [Item.new('Sulfuras, Hand of Ragnaros', 0, 0)]
