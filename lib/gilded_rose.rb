@@ -44,14 +44,6 @@ def reduce_sell_in(item)
   end
 end
 
-# def decrease_quality(item)
-#   unless sulfuras?(item)
-#     item.quality = item.quality + 1
-#   end
-# end
-
-# Items that age well
-
 def limit(item)
   item.quality >= 50
 end

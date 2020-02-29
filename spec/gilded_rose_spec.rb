@@ -12,7 +12,9 @@ describe GildedRose do
       GildedRose.new(items).update_quality
       expect(items[0].name).to eq 'foo'
     end
+  end
 
+  describe '#regular' do
     it 'cannot be negative' do
       books = [Item.new('Book', 1, 4)]
       gr = GildedRose.new(books)
@@ -100,3 +102,6 @@ describe GildedRose do
     end
   end
 end
+
+# expired items
+# approach_zero
